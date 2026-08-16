@@ -7,9 +7,31 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Build Docker images
+  targets:
+    name: List images
     runs-on: ubuntu-latest
+
+    outputs:
+      targets: ${{ steps.list.outputs.targets }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: List bake targets
+        id: list
+        run: |
+          echo "targets=$(docker buildx bake --print | jq -c '.group.default.targets')" >> "$GITHUB_OUTPUT"
+
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    needs: targets
+
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ${{ fromJSON(needs.targets.outputs.targets) }}
 
     steps:
       - name: Free disk space
@@ -44,5 +66,6 @@ jobs:
           docker buildx bake \
             --push \
             --provenance=true \
-            --set="*.cache-from=type=gha" \
-            --set="*.cache-to=type=gha,mode=max"
+            --set="*.cache-from=type=gha,scope=${{ matrix.target }}" \
+            --set="*.cache-to=type=gha,mode=max,scope=${{ matrix.target }}" \
+            "${{ matrix.target }}"
