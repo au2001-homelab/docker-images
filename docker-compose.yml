@@ -2,7 +2,7 @@ version: "3"
 
 services:
   container-disk-debian12-cloud:
-    image: au2001/container-disk-debian12-cloud:latest
+    image: ghcr.io/au2001-homelab/container-disk-debian12-cloud:latest
     build:
       context: ./container-disk-debian12-cloud
       x-bake:
@@ -11,7 +11,7 @@ services:
         - linux/arm64
 
   container-disk-windows11:
-    image: au2001/container-disk-windows11:latest
+    image: ghcr.io/au2001-homelab/container-disk-windows11:latest
     build:
       context: ./container-disk-windows11
       x-bake:
@@ -19,7 +19,7 @@ services:
         - linux/amd64
 
   container-disk-virtio-win:
-    image: au2001/container-disk-virtio-win:latest
+    image: ghcr.io/au2001-homelab/container-disk-virtio-win:latest
     build:
       context: ./container-disk-virtio-win
       x-bake:
@@ -27,7 +27,7 @@ services:
         - linux/amd64
 
   http-file-server:
-    image: au2001/http-file-server:latest
+    image: ghcr.io/au2001-homelab/http-file-server:latest
     build:
       context: ./http-file-server
       x-bake:
