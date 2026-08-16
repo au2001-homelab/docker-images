@@ -25,3 +25,11 @@ services:
       x-bake:
         platforms:
         - linux/amd64
+
+  http-file-server:
+    image: au2001/http-file-server:latest
+    build:
+      context: ./http-file-server
+      x-bake:
+        platforms:
+        - linux/amd64
